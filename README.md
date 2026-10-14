@@ -65,11 +65,8 @@ for the example settings, local configuration and MPI setup.
 
 ## Examples
 
-The transverse-field Ising example computes thermal observables on square
-lattices with open boundaries. It has its own configuration, entry point and
-Julia environment.
-
-- [Transverse-field Ising model](examples/transverse_Ising_model/): Energy per site, log partition function and sampling efficiency using $Z_2$ symmetry.
+The [transverse-field Ising example](examples/transverse_Ising_model/) computes thermal observables on square
+lattices with open boundaries. 
 
 The example README gives its Hamiltonian, parameter table, temperature grid
 and output files. See the [application guide](docs/src/guide/applications.md)

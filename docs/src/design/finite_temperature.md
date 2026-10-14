@@ -7,10 +7,8 @@ ensemble of PEPS samples. The method follows
 
 ## Purification
 
-Starting from the identity PEPO, imaginary-time evolution constructs the
-thermal factor ``X(\tau)=e^{-\tau H}`` at ``\tau=\beta_0/2``. The normalized
-density operator is ``\rho=X X^\dagger/Z``, with
-``Z=\mathrm{Tr}(X X^\dagger)``. The checkpoint stores this PEPO and its
+Starting from the identity PEPO, imaginary-time evolution gives 
+$\rho(\beta/2) = e^{-\beta H/2} / \sqrt{Z}$. The checkpoint stores PEPO and its
 global logarithmic amplitude.
 
 ## Stochastic evolution
