@@ -22,7 +22,7 @@ from beta0:
 \qquad w_k(\beta)=\|\tilde\psi_k(\beta)\|^2,
 ```
 
-The normalized evolved sample is ``|\psi_k(\beta)\rangle=|\tilde\psi_k(\beta)\rangle/\sqrt{w_k(\beta)}``.
+The normalized evolved sample is $|\psi_k(\beta)\rangle=|\tilde\psi_k(\beta)\rangle/\sqrt{w_k(\beta)}$.
 
 ```math
 \langle O\rangle_\beta\simeq

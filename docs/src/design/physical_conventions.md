@@ -13,11 +13,7 @@ have inverse-energy units. Thermal preparation evolves to tau=beta/2.
 
 ## Transverse-field Ising model
 
-The Hamiltonian is Eq. (14) of [the paper](paper.md):
 
-```math
-H=-J\sum_{\langle i,j\rangle}S_i^zS_j^z-B\sum_iS_i^x.
-```
 
 The implementation `TFIM(J,h)` uses Pauli operators with eigenvalues ±1.
 
@@ -25,7 +21,3 @@ The implementation `TFIM(J,h)` uses Pauli operators with eigenvalues ±1.
 H=-J\sum_{\langle ij\rangle} Z_i Z_j-h\sum_i X_i.
 ```
 
-The paper uses spin operators S=Pauli/2. Its J=1, B=1.52 corresponds to
-`TFIM(J=0.25,h=0.76)` in the same energy units. The shipped
-`TFIM(J=1,h=3.04)` configuration uses four times that energy scale:
-`T_paper=T/4` and `E_paper=E/4`.
