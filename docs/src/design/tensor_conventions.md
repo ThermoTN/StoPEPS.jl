@@ -9,22 +9,13 @@ pair `(ket,bra)` and fuse to `(W,N,E,S)`.
 
 PEPO physical and auxiliary legs represent the doubled Hilbert space in
 Eq. (16) of [the paper](paper.md). A Born sample retains the selected auxiliary
-multiplet: dimension one for TFIM and dimensions 1,2,1 for Hubbard's
-empty/single/double outcomes. Measurements contract the auxiliary carrier.
+multiplet of dimension one. Measurements contract the auxiliary carrier.
 
 TensorKit permutations, fusion maps, QR and SVD preserve the native spaces and
 their orientations. Bond dimensions count the full representation dimension;
 sector capacities additionally control the number of retained multiplets.
 The state amplitude includes `exp(log_amplitude)`, which accumulates local
 tensor normalization factors.
-
-## Fermionic representation
-
-Hubbard tensors use `U1Irrep ⊠ SU2Irrep ⊠ FermionParity`, with charge n-1
-and parity n modulo 2. TensorKit braiding supplies fermionic signs. The
-contraction kernels use evaluation-map twists to connect diagrammatic
-contractions with the positive metrics used by QR, SVD and full update.
-Norms and truncations include multiplet dimensions.
 
 ## Boundary MPS
 

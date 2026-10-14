@@ -46,10 +46,9 @@ Edit `config.local.jl` to set the model, numerical controls and
 otherwise it loads `config.jl`. Git ignores local configurations and output.
 Both stages and all MPI ranks use the selected configuration.
 
-The example READMEs list the Hamiltonian, supplied parameters and temperature
-grids for [TFIM](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/transverse_Ising_model/README.md#parameters)
-and [Hubbard](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/Hubbard_model/README.md#parameters).
-Their `config.jl` files write to the respective example directories by default;
+The [TFIM example README](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/transverse_Ising_model/README.md#parameters)
+lists the Hamiltonian, supplied parameters and temperature grids.
+Its `config.jl` writes to the example directory by default;
 set `output_directory` in the local configuration to keep separate runs.
 
 For a small MPI calculation, the TFIM `config.local.jl` can contain:
@@ -81,9 +80,6 @@ Use `-n 1` for a single-rank calculation. The stochastic entry point initializes
 MPI; each rank receives the beta0 checkpoint. Rank zero writes the main result.
 Choose a shared output directory for multi-node work. A system MPI installation
 uses a matching launcher and Julia MPI backend; see [troubleshooting](troubleshooting.md).
-
-For Hubbard, set `APP=examples/Hubbard_model` during setup and follow the
-[Hubbard example](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/Hubbard_model/README.md#run).
 
 ## Cluster jobs
 

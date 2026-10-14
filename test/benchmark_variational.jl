@@ -48,8 +48,7 @@ function bench(label,f;warm=2,reps=5)
     value
 end
 if isempty(ARGS) || "local" in ARGS
-for (name,P,V,D,chi,l) in (("Z2",Z2Space(0=>1,1=>1),Z2Space(0=>2,1=>2),4,32,Lattice(4,4)),
-        ("Hubbard",physical_space(Hubbard()),physical_space(Hubbard())⊕physical_space(Hubbard()),8,128,Lattice(2,2)))
+for (name,P,V,D,chi,l) in (("Z2",Z2Space(0=>1,1=>1),Z2Space(0=>2,1=>2),4,32,Lattice(4,4)),)
     state=graded_random_state(l,P,V;seed=618)
     for algorithm in (BoundaryMPSDiagonal,BoundaryMPSDiagonalVariational)
         method=algorithm(chi)
@@ -59,7 +58,7 @@ for (name,P,V,D,chi,l) in (("Z2",Z2Space(0=>1,1=>1),Z2Space(0=>2,1=>2),4,32,Latt
             layer_fallbacks=count(r->r.fallback!==nothing,records)));flush(stdout)
     end
     if hasfield(BoundaryMPSDiagonalVariational,:target_cache_bytes)
-        input=SP.DiagonalBoundary();layer=name=="Z2" ? 5 : 3
+        input=SP.DiagonalBoundary();layer=5
         for t in 2:layer-1
             SP._diagonal_absorb_layer!(input,state.sites,l,t,BoundaryMPSDiagonal(chi))
         end
@@ -80,8 +79,7 @@ end
 # Short, reproducible workflows use the example's lattice, model and capacity,
 # with one purification step, four draws, and one forced resample/replay endpoint.
 if isempty(ARGS) || "workflow" in ARGS
-for (name,model,l,D,chi) in (("Z2",TFIM(h=3.04,physical_space=Z2Space(0=>1,1=>1)),Lattice(4,4),4,32),
-        ("Hubbard",Hubbard(U=8,mu=4),Lattice(2,2),8,128))
+for (name,model,l,D,chi) in (("Z2",TFIM(h=3.04,physical_space=Z2Space(0=>1,1=>1)),Lattice(4,4),4,32),)
     base=RunConfig(lattice=l,model=model,D_pur=D,D_peps=D,chi_environment=chi,chi_sampling=chi,chi_measurement=chi,chi_proposal=chi,
         beta0=.02,beta_log=[0.,.02,.04],beta_measure=[0.,.02,.04],delta_tau_pur=.01,delta_tau_peps=.01,Ns=4,seed=20260924,
         contraction=BoundaryMPSDiagonal,resampling=ResamplingOptions(eta_th=1.))

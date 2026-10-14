@@ -60,8 +60,7 @@ and reduced FU insertions. `physical` leaves the two physical/core legs open.
 """
 function _diagonal_apply(message,A,B,ports,inputs;physical=nothing)
     length(inputs)==2 || throw(ArgumentError("a diagonal vertex has two input ports"))
-    ket=_fermionic(A) ? _twistdual(A,physical===nothing ? (3,4) : (4,)) : A
-    bra=_fermionic(B) ? twist(B,_VIRTUAL_AXES) : B
+    ket=A;bra=B
     rawket=(-1,-3,-9,-10,-5,-7)
     rawbra=(-2,-4,-9,-10,-6,-8)
     if physical!==nothing
@@ -131,14 +130,14 @@ function _diagonal_center!(env,target)
     while env.center<target
         i=env.center
         Q,R=left_orth(permute(B[i],((1,2),(3,))))
-        B[i]=_out(Q);R=_twistdual(R,(1,));A=B[i+1]
+        B[i]=_out(Q);A=B[i+1]
         @tensor C[l,p,r] := R[l,k]*A[k,p,r]
         B[i+1]=C;env.center+=1
     end
     while env.center>target
         i=env.center
         L,Q=right_orth(permute(B[i],((1,),(2,3))))
-        B[i]=_out(_twistdual(Q,(1,)));A=B[i-1]
+        B[i]=_out(Q);A=B[i-1]
         @tensor C[l,p,r] := A[l,p,k]*L[k,r]
         B[i-1]=C;env.center-=1
     end
@@ -221,10 +220,10 @@ function _diagonal_block_center_step!(blocks,j,right)
         blocks[j]=_out(Q)
         R,scale=_diagonal_normalized(R)
         next=blocks[j+1]
-        blocks[j+1]=_out(_twistdual(R,(1,))*permute(next,((1,),Tuple(2:numind(next)))))
+        blocks[j+1]=_out(R*permute(next,((1,),Tuple(2:numind(next)))))
     else
         L,Q=right_orth(permute(A,((1,),Tuple(2:rank))))
-        blocks[j]=_out(_twistdual(Q,(1,)))
+        blocks[j]=_out(Q)
         L,scale=_diagonal_normalized(L)
         previous=blocks[j-1];last=numind(previous)
         blocks[j-1]=_out(permute(previous,(Tuple(1:last-1),(last,)))*L)
@@ -251,9 +250,9 @@ function _diagonal_compress_blocks!(blocks,layout,method;right,reverse=false,ent
             max_error=max(max_error,iszero(magnitude) ? 0.0 : (err/magnitude)^2)
             if right
                 tensors[first(cut)]=_out(U)
-                blocks[j]=_out(_twistdual(S*V,(1,)))
+                blocks[j]=_out(S*V)
             else
-                tensors[last(cut)]=_out(_twistdual(V,(1,)))
+                tensors[last(cut)]=_out(V)
                 blocks[j]=_out(U*S)
             end
         end
@@ -440,5 +439,5 @@ function _diagonal_site_hole(left,right,strip,k,A)
     for (i,axis) in reverse(collect(enumerate(_VIRTUAL_AXES)))
         V=space(A,axis);H=_split(H,i,(dual(V),V))
     end
-    _linearmap_metric(permute(H,((2,4,6,8),(1,3,5,7))))
+    permute(H,((2,4,6,8),(1,3,5,7)))
 end

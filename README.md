@@ -31,8 +31,7 @@ Boundary matrix product states (MPS) contract the surrounding network
 ### Stochastic sampling
 
 At `beta0`, perfect Born sampling sequentially draws auxiliary configurations
-from the purified PEPO. Sampling whole symmetry multiplets preserves
-non-Abelian symmetries in the resulting PEPS samples. Each sample is then
+from the purified PEPO. Each sample is then
 evolved to lower temperatures by full update. Observables are estimated as
 ratios of weighted sums, with weights accounting for the sampling probability
 and subsequent imaginary-time evolution. The boundary-MPS dimension controls
@@ -66,15 +65,15 @@ for the example settings, local configuration and MPI setup.
 
 ## Examples
 
-These examples compute thermal observables on square lattices with open
-boundaries. Each has its own configuration, entry point and Julia environment.
+The transverse-field Ising example computes thermal observables on square
+lattices with open boundaries. It has its own configuration, entry point and
+Julia environment.
 
 - [Transverse-field Ising model](examples/transverse_Ising_model/): Energy per site, log partition function and sampling efficiency using $Z_2$ symmetry.
-- [Hubbard model](examples/Hubbard_model/): Physical Hubbard energy per site and log grand partition function at fixed chemical potential using $U(1) \times SU(2)$ symmetry.
 
-Each example README gives its Hamiltonian, parameter table, temperature grid
+The example README gives its Hamiltonian, parameter table, temperature grid
 and output files. See the [application guide](docs/src/guide/applications.md)
-for a comparison and the [physical conventions](docs/src/design/physical_conventions.md)
+and the [physical conventions](docs/src/design/physical_conventions.md)
 for energy units and symmetry labels.
 
 ## Documentation and development

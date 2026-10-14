@@ -57,7 +57,6 @@ function _record_entropy!(diagnostic,side,row,bond,value)
 end
 
 function _act(A, O, axis)
-    A=_twistdual(A,(axis,))
     labels=collect(-1:-1:-numind(A)); labels[axis]=1
     return ncon([A,O],[labels,[-axis,1]];output=collect(-1:-1:-numind(A)))
 end
@@ -66,10 +65,6 @@ end
 function double_layer(ket, bra=ket; physical=nothing, auxiliary=nothing)
     A=physical === nothing ? ket : _act(ket,physical,3)
     A=auxiliary === nothing ? A : _act(A,auxiliary,4)
-    if _fermionic(A)
-        A=_twistdual(A,(3,4))
-        bra=twist(bra,(1,2,5,6))
-    end
     @tensor raw[w,wb,n,nb,e,eb,s,sb] := A[w,n,p,a,e,s]*conj(bra[wb,nb,p,a,eb,sb])
     for axis in (7,5,3,1)
         raw=_fuse(raw,axis,2)
@@ -102,7 +97,7 @@ function compress_boundary!(B, chi; reverse=false,sector_space=nothing,on_trunca
     if !reverse
         for x in N:-1:2
             L,Q=right_orth(permute(B[x],((1,),(2,3))))
-            B[x]=_out(_twistdual(Q,(1,)))
+            B[x]=_out(Q)
             A=B[x-1]
             @tensor C[l,p,r] := A[l,p,k]*L[k,r]
             B[x-1]=C
@@ -111,14 +106,14 @@ function compress_boundary!(B, chi; reverse=false,sector_space=nothing,on_trunca
             M=permute(B[x],((1,2),(3,)))
             U,S,V,err=_boundary_svd(M,_truncation(chi,sector_space),on_truncate,x)
             max_error=max(max_error,iszero(norm(M)) ? 0.0 : (err/norm(M))^2)
-            B[x]=_out(U); R=_twistdual(S*V,(1,)); A=B[x+1]
+            B[x]=_out(U); R=S*V; A=B[x+1]
             @tensor C[l,p,r] := R[l,k]*A[k,p,r]
             B[x+1]=C
         end
     else
         for x in 1:N-1
             Q,R=left_orth(permute(B[x],((1,2),(3,))))
-            B[x]=_out(Q); R=_twistdual(R,(1,)); A=B[x+1]
+            B[x]=_out(Q); A=B[x+1]
             @tensor C[l,p,r] := R[l,k]*A[k,p,r]
             B[x+1]=C
         end
@@ -126,7 +121,7 @@ function compress_boundary!(B, chi; reverse=false,sector_space=nothing,on_trunca
             M=permute(B[x],((1,),(2,3)))
             U,S,V,err=_boundary_svd(M,_truncation(chi,sector_space),on_truncate,x-1)
             max_error=max(max_error,iszero(norm(M)) ? 0.0 : (err/norm(M))^2)
-            B[x]=_out(_twistdual(V,(1,))); L=U*S; A=B[x-1]
+            B[x]=_out(V); L=U*S; A=B[x-1]
             @tensor C[l,p,r] := A[l,p,k]*L[k,r]
             B[x-1]=C
         end

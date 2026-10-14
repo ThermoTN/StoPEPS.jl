@@ -67,7 +67,7 @@ end
     exact_thermal_observables(lattice, model, beta)
 
 Small-system exact thermal energy per site, total energy and log partition
-function. The Hubbard method also returns particle number and density.
+function.
 """
 function exact_thermal_observables(l::Lattice,m::TFIM,beta)
     e=eigvals(Hermitian(dense_hamiltonian(l,m))); shift=minimum(e)

@@ -1,18 +1,17 @@
 # Applications
 
-The applications share purification, Born sampling, full update, measurements
-and MPI execution. Each has its own model configuration and Julia environment.
+The application uses purification, Born sampling, full update, measurements
+and MPI execution, with its own model configuration and Julia environment.
 Start with the [2 × 2 TFIM calculation](https://github.com/ThermoTN/StoPEPS.jl#a-quick-start).
-The example READMEs give the Hamiltonians, parameter tables, temperature grids
-and run commands for the supplied research configurations.
+The example README gives the Hamiltonian, parameter table, temperature grid
+and run commands for the supplied research configuration.
 
 | Application | Shipped configuration | Observables |
 |---|---|---|
 | [transverse_Ising_model](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/transverse_Ising_model/README.md) | 4×4 OBC, J=1, h=3.04, Z₂ symmetry, beta0=1, beta through 8, Ns=64, D=4, chi=32 | Energy per site, log partition function and sampling efficiency |
-| [Hubbard_model](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/Hubbard_model/README.md) | 2×2 OBC, t=1, U=8, mu=4, U(1)×SU(2) symmetry, beta0=1, beta through 16, Ns=32, D=8, chi=128 | Physical Hubbard energy per site, log grand partition function and sampling efficiency |
 
-Both configurations select diagonal boundary-MPS contractions and annealed
-Born resampling. They provide starting points for [convergence studies](validation.md).
+The research configuration selects diagonal boundary-MPS contractions and annealed
+Born resampling. It provides a starting point for [convergence studies](validation.md).
 
 ## Transverse-field Ising model
 
@@ -28,18 +27,9 @@ for the supported sampling bases and
 [physical conventions](../design/physical_conventions.md)
 for the Hamiltonian and the paper's energy units.
 
-## Hubbard model
-
-The [Hubbard example](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/Hubbard_model/README.md)
-is grand canonical at fixed chemical potential. Its mu=U/2 configuration is
-half filled on average. It evolves with H-mu*N and reports physical H energy
-per site, log grand partition function and sampling efficiency; sample records
-also include particle number.
-The [physical conventions](../design/physical_conventions.md)
-define the thermal generator, measured energy and sampled multiplets.
 Use [setup and launch](quickstart.md) for local configuration and MPI setup.
 
-Both applications use the stoPEPS method of
+The application uses the stoPEPS method of
 [Gao et al., 2026](https://arxiv.org/abs/2609.35754). The
 [paper and notation guide](../design/paper.md) connects the implementation to
 the method references.

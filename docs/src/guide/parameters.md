@@ -10,7 +10,7 @@ explicit settings.
 | Parameter | Default | Meaning |
 |---|---|---|
 | `lattice` | `Lattice(2,2)` | Positive Lx and Ly; square lattice with open boundaries |
-| `model` | `TFIM(J=1,h=0.7)` | Pauli Ising Hamiltonian; `Hubbard(t=1,U=8,mu=4)` selects fixed-mu Hubbard |
+| `model` | `TFIM(J=1,h=0.7)` | Pauli Ising Hamiltonian |
 | `beta0` | 0.1 | Born sampling inverse temperature |
 | `beta_log` | 0:0.05:0.3 | Output nodes for normalization, efficiency and resampling |
 | `beta_measure` | [0,0.1,0.2,0.3] | Energy measurement nodes |
@@ -20,7 +20,7 @@ explicit settings.
 Beta values are finite and nonnegative. The resolved grid is the sorted union
 of both vectors, 0 and beta0, ending at its largest value. The
 [physical conventions](../design/physical_conventions.md) give the Ising
-operator convention, Hubbard energy convention and units.
+operator convention and units.
 
 ## Tensor dimensions and contraction
 

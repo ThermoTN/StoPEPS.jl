@@ -55,8 +55,8 @@ for row in result["observables"]["curve"]
 end
 ```
 
-The dense reference returns energy per site, total energy and lnZ. Its Hubbard
-method also returns particle number and density. Hilbert-space storage grows
+The dense reference returns energy per site, total energy and lnZ.
+Hilbert-space storage grows
 exponentially with site count; the four-site quick start provides a small
 reference for the workflow.
 

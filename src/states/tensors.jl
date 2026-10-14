@@ -5,19 +5,11 @@ _conj(t) = TensorOperations.tensorcopy(Tuple(1:numind(t)), t,
     Tuple(1:numind(t)), true)
 _product(v) = reduce(⊗, v)
 _finite(t::AbstractTensorMap) = all(b -> all(isfinite, last(b)), blocks(t))
-_fermionic(t)=BraidingStyle(sectortype(t)) isa Fermionic
-_twistdual(t,indices)=_fermionic(t) ? twist(t,Tuple(index for index in indices if isdual(space(t,index)))) : t
-_linearmap_metric(t)=_twistdual(t,1:numind(t))
 
 function _fusionmap(::Type{Scalar},spaces,dual_output) where Scalar
     group=_product(spaces)
     fused=fuse(group)
     isdual(fused)==dual_output || (fused=flip(fused))
-    if dual_output && BraidingStyle(sectortype(fused)) isa Fermionic
-        opposite=isomorphism(Scalar,dual(fused),_product(dual.(spaces)))
-        inverse=_twistdual(opposite',Tuple(1:length(spaces)))
-        return permute(inverse,((length(spaces)+1,),Tuple(1:length(spaces))))
-    end
     isomorphism(Scalar,fused,group)
 end
 
@@ -59,10 +51,6 @@ function _split(t, axis::Int, spaces)
     extra = [-numind(t)-k for k in eachindex(spaces)]
     output = vcat(labels[1:axis-1], extra, labels[axis+1:end])
     inverse=adjoint(F)
-    if _fermionic(t)
-        twists=Tuple([findall(isdual,collect(spaces));isdual(space(t,axis)) ? [length(spaces)+1] : Int[]])
-        inverse=twist(inverse,twists)
-    end
     return ncon([t, inverse], [labels, [extra; 1]]; output)
 end
 

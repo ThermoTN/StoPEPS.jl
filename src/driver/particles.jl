@@ -111,8 +111,7 @@ function _particle_scalar(p;owner=0)
         max_state_truncation=p.max_state_truncation,max_environment_truncation=p.max_environment_truncation,
         max_boundary_entropy=p.max_boundary_entropy,Se=p.Se===nothing ? nothing : map(copy,p.Se),
         time_seconds=p.time_seconds,measurement_seconds=p.measurement_seconds)
-    sectortype(p.state[1,1])===HubbardSector ?
-        merge(record,(;particle_number=sum(p.configuration.-1))) : record
+    record
 end
 function _global_particles(particles,e)
     local_records=_phase(()->[_particle_scalar(p;owner=_rank(e)) for p in particles],e)

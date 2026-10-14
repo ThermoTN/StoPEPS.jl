@@ -103,7 +103,6 @@ function validate_config(c::RunConfig)
             error("invalid full-update options")
     end
     c.model isa TFIM && !all(isfinite,(c.model.J,c.model.h)) && error("nonfinite model parameter")
-    c.model isa Hubbard && !all(isfinite,(c.model.t,c.model.U,c.model.mu)) && error("nonfinite model parameter")
     P=physical_space(c.model)
     for V in (c.bond_space_pur,c.bond_space_peps,c.environment_space,c.sampling_space,c.measurement_space,c.proposal_space)
         V===nothing && continue
@@ -174,11 +173,6 @@ function parameter_dict(c::RunConfig)
     data["resampling_rng_convention"]="event_and_slot; slot=(sweep-1)*Ns+draw; Ns_IDs_reserved_per_sweep"
     data["factor_time_convention"]="tau=beta/2"
     data["temperature_nodes"]=temperature_nodes(c)
-    if c.model isa Hubbard
-        data["fermion_convention"]=FERMION_CONVENTION
-        data["thermal_generator"]="K=H-mu*N; fixed_mu_grand_canonical"
-        data["energy_observable"]="H=-t*sum(hopping)+U*sum(double_occupancy)"
-    end
     data
 end
 

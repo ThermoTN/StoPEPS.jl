@@ -30,8 +30,6 @@ function load_checkpoint(path,c::RunConfig)
     d["schema_version"] in ("2.0.0","2.1.0","2.2.0","2.3.0","2.4.0","2.5.0","2.6.0",Results.RESULT_SCHEMA_VERSION) &&
         d["parameters"]["checkpoint_format"]==CHECKPOINT_FORMAT || error("unsupported checkpoint format")
     p=d["parameters"]; o=d["observables"]; current=parameter_dict(c)
-    c.model isa Hubbard && get(p,"fermion_convention",nothing)!=FERMION_CONVENTION &&
-        error("checkpoint fermion convention mismatch")
     _same_model_parameters(p["model"],current["model"]) && p["lattice"]==current["lattice"] &&
         _same_beta(o["beta0"],c.beta0) || error("checkpoint model, lattice or beta0 mismatch")
     state=FinitePEPO(c.lattice,o["sites"];beta=o["beta0"],log_amplitude=o["log_amplitude"])

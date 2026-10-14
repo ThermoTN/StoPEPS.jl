@@ -8,12 +8,12 @@ The [documentation index](src/index.md) provides the user guides, and
 | Source directory | Responsibility |
 |---|---|
 | `src/states/` | Finite PEPO/PEPS tensors and normalization |
-| `src/models/` | Ising and Hubbard operators, gates and exact references |
+| `src/models/` | Ising operators, gates and exact references |
 | `src/contraction/` | Row and diagonal boundary-MPS contractions |
 | `src/evolution/` | Two-site full update and environment repair |
 | `src/sampling/` | Born sampling, basis definitions and projection |
 | `src/resample/` | Mixture proposals and importance resampling |
-| `src/measurement/` | Energy and particle-number measurements |
+| `src/measurement/` | Energy measurements |
 | `src/statistics/` | Weighted observables and sampling uncertainty |
 | `src/driver/` | Configuration and the two calculation stages |
 | `src/io/` | Logs, numerical results and the thermal checkpoint |

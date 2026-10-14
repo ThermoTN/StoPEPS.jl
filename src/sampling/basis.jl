@@ -15,7 +15,7 @@ struct OrthonormalBasis{M<:AbstractMatrix}
         new{typeof(V)}(copy(V),labels)
     end
 end
-"""Abelian charge states, or complete Hubbard U(1)×SU(2) irreducible carriers."""
+"""Abelian charge states."""
 struct SymmetryBasis end
 XBasis()=OrthonormalBasis([1. 1.;-1. 1.]/sqrt(2);labels=[-1,1])
 YBasis()=OrthonormalBasis(ComplexF64[1 1;-im im]/sqrt(2);labels=[-1,1])
@@ -35,19 +35,6 @@ end
 
 function _local_basis(spec,P)
     I=sectortype(P)
-    if I===HubbardSector
-        spec isa SymmetryBasis && P==_hubbard_space() ||
-            throw(ArgumentError("Hubbard sampling requires SymmetryBasis() and the Hubbard physical space"))
-        physical=AbstractTensorMap[]; auxiliary=AbstractTensorMap[]
-        for charge in _hubbard_sectors()
-            carrier=spacetype(P)(charge=>1)
-            embedding=isometry(Float64,P,carrier)
-            push!(physical,embedding')
-            push!(auxiliary,_twistdual(permute(embedding,((2,),(1,))),(1,)))
-        end
-        return LocalSamplingBasis(zeros(0,0),[1,2,3],
-            [charge[1] for charge in _hubbard_sectors()],physical,auxiliary)
-    end
     if I===Trivial
         spec isa OrthonormalBasis || throw(ArgumentError("nonsymmetric sampling requires an OrthonormalBasis"))
         size(spec.vectors,1)==dim(P) || throw(DimensionMismatch("sampling basis physical dimension"))
@@ -101,10 +88,6 @@ _project(A,B::LocalSamplingBasis,k,kind)=_act(A,kind==:auxiliary ? B.auxiliary[k
 _fuse_charge(a,b)=only(a⊗b)
 function _state_charge(state::FinitePEPS)
     I=sectortype(state[1,1])
-    if I===HubbardSector
-        return foldl(_fuse_charge,(dual(only(sectors(space(state[site],4))))[1]
-            for site in site_order(state.lattice));init=one(U1Irrep))
-    end
     foldl(_fuse_charge,(dual(only(sectors(space(state[i],4)))) for i in site_order(state.lattice));init=one(I))
 end
 function _charge_suffix(basis::ResolvedBasis,order=CartesianIndices(basis.sites))
@@ -116,14 +99,6 @@ function _charge_suffix(basis::ResolvedBasis,order=CartesianIndices(basis.sites)
     reachable
 end
 function _basis_parameters(basis::ResolvedBasis)
-    if sectortype(basis.space)===HubbardSector
-        encode_carrier(B)=Dict("labels"=>B.labels,"particle_numbers"=>[0,1,2],
-            "charges"=>[-1,0,1],"spins"=>[0.0,0.5,0.0],"parities"=>[0,1,0],
-            "carrier_dimensions"=>[1,2,1],"sectors"=>string.(_hubbard_sectors()))
-        return Dict("version"=>2,"convention"=>"irreducible_projectors; dual_embedding_auxiliary",
-            "fermion_convention"=>FERMION_CONVENTION,"site_order"=>"x_then_y",
-            "sites"=>[encode_carrier(B) for B in vec(basis.sites)])
-    end
     encode(B)=Dict("vectors_real"=>real.(B.vectors),"vectors_imag"=>imag.(B.vectors),
         "labels"=>B.labels,"charges"=>string.(B.charges))
     Dict("version"=>1,"convention"=>"physical_ket_columns; auxiliary_conjugate_basis",

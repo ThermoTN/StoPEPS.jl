@@ -21,7 +21,6 @@ numbers below refer to [version 1](https://arxiv.org/html/2609.35754v1).
 | Energy per site | ``\epsilon=E/N`` | `energy_per_site` |
 | Sampling efficiency | ``\eta`` | `eta` |
 | Mixture proportion, App. B | ``\lambda`` | Selected event `lambda`; controls in `ResamplingOptions` |
-| Local Hubbard charge and spin | ``(C_z,S)`` | U(1)×SU(2) sectors with stored charge `q=C_z-1` |
 | Ising couplings, Eq. (14) | ``J,B`` with ``S=\sigma/2`` | `TFIM(J=J/4,h=B/2)` in the same energy units |
 
 ## Methods and implementation
@@ -33,8 +32,7 @@ presents [annealed Born resampling](resampling.md).
 
 `BoundaryMPSRow` follows the row-by-row traversal of Appendix E. The package
 also provides diagonal and variational boundary-MPS contractions, selected
-through `RunConfig.contraction`. The Hubbard example applies the multiplet
-sampling of Sec. II B to U(1)×SU(2)-symmetric PEPO and PEPS tensors.
+through `RunConfig.contraction`.
 
 PEPS represent the spatial lattice directly
 ([Verstraete and Cirac, 2004](https://arxiv.org/abs/cond-mat/0407066)).

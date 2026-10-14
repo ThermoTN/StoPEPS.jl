@@ -31,10 +31,7 @@ basis descriptors selects a basis at each site. A run uses one fixed choice
 for initial sampling and resampling. The default `:auto` selects X for dense
 TFIM and `SymmetryBasis()` for symmetric models.
 
-Z₂ sampling selects parity eigenstates. Hubbard sampling selects the complete
-U(1)×SU(2) multiplets of Sec. II B, retaining auxiliary dimensions 1,2,1.
-The [physical conventions](physical_conventions.md) give their labels and
-quantum numbers.
+Z₂ sampling selects parity eigenstates.
 
 `project_configuration` applies the auxiliary projection and returns a PEPS
 with its normalization records. For complex bases, auxiliary projection uses

@@ -90,8 +90,6 @@ function run_stochastic(c::RunConfig;checkpoint=nothing,checkpoint_path=nothing,
         p=parameter_dict(c)
         _same_model_parameters(cp.preparation["model"],p["model"]) && cp.preparation["lattice"]==p["lattice"] &&
             _same_beta(cp.state.beta,c.beta0) || error("checkpoint model, lattice or beta0 mismatch")
-        c.model isa Hubbard && get(cp.preparation,"fermion_convention",nothing)!=FERMION_CONVENTION &&
-            error("checkpoint fermion convention mismatch")
     end
     out=_phase(()->_open_output(c,:stochastic;rank=_rank(e),nranks=_nprocs(e),checkpoint=cp),e)
     try

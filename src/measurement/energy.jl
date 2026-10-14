@@ -8,7 +8,7 @@ end
 function _operator_factors(op)
     M=permute(op,((1,3),(2,4)))
     U,S,V,_=svd_trunc(M;trunc=trunctol(atol=64eps(Float64)*norm(M)))
-    (_out(U*S),_out(_twistdual(V,(1,))))
+    (_out(U*S),_out(V))
 end
 function _operator_pair(A,B,factors,direction)
     F,G=factors
@@ -25,10 +25,6 @@ end
 function _energy_terms(model::TFIM,::Type{Scalar}) where Scalar
     operators=spin_operators(model,Scalar)
     (;onsite=operators.X,pair=operators.ZZ,onsite_scale=-model.h,pair_scale=-model.J)
-end
-function _energy_terms(model::Hubbard,::Type{Scalar}) where Scalar
-    operators=hubbard_operators(model,Scalar)
-    (;onsite=operators.D,pair=operators.hopping,onsite_scale=model.U,pair_scale=-model.t)
 end
 
 """Cached one-site and nearest-neighbor measurement, shared by PEPO and PEPS."""

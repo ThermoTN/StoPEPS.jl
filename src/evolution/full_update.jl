@@ -43,20 +43,15 @@ function _restore_pair(pair,A,B)
 end
 
 function _reduced_metric(H::AbstractTensorMap,Qa,Qb)
-    firstbra=_fermionic(Qa) ? twist(Qa,(1,2,3)) : Qa
-    secondbra=_fermionic(Qb) ? twist(Qb,(1,2,3)) : Qb
-    Qa=_twistdual(Qa,(4,)); Qb=_twistdual(Qb,(4,))
     @tensor N[rb,sb;rk,sk] := H[a,ab,b,bb,c,cb,d,db,e,eb,f,fb]*
-        Qa[a,b,c,u,rk]*conj(firstbra[ab,bb,cb,u,rb])*
-        Qb[d,e,f,v,sk]*conj(secondbra[db,eb,fb,v,sb])
+        Qa[a,b,c,u,rk]*conj(Qa[ab,bb,cb,u,rb])*
+        Qb[d,e,f,v,sk]*conj(Qb[db,eb,fb,v,sb])
     N
 end
 
 """External double legs (ket,bra), with the two reduced-core legs left open."""
 function _reduced_layer(Q)
-    bra=_fermionic(Q) ? twist(Q,(1,2,3)) : Q
-    Q=_twistdual(Q,(4,))
-    @tensor A[w,wb,n,nb,e,eb,rb,rk] := Q[w,n,e,u,rk]*conj(bra[wb,nb,eb,u,rb])
+    @tensor A[w,wb,n,nb,e,eb,rb,rk] := Q[w,n,e,u,rk]*conj(Q[wb,nb,eb,u,rb])
     for k in (5,3,1)
         A=_fuse(A,k,2)
     end
@@ -147,12 +142,11 @@ function _solve_core(metric,rhs,initial,options)
 end
 
 function _left_normal_equation(metric,right,target)
-    reduced=_fermionic(metric) ? twist(metric,(2,4)) : metric
-    @tensor normal[first,bond;second,other] := reduced[first,south,second,north]*
+    @tensor normal[first,bond;second,other] := metric[first,south,second,north]*
         conj(right[bond,physical,south])*right[other,physical,north]
     @tensor rhs[first,physical,bond] := metric[first,south,second,north]*
         target[second,physical,partner,north]*conj(right[bond,partner,south])
-    normal,_linearmap_metric(permute(rhs,((1,3),(2,))))
+    normal,permute(rhs,((1,3),(2,)))
 end
 
 function _right_normal_equation(metric,left,target)
@@ -220,9 +214,9 @@ function update_bond!(state,i,j,gate,D,method::FullUpdate,hole;direction,boundar
     fit=_optimize_pair(pair,N,method); repairs=NamedTuple[]
     if fit.trigger!==nothing
         # PSD-project the full two-site environment, then apply QR reduction.
-        matrix=_linearmap_metric(permute(bond_hole(hole),((2,4,6,8,10,12),(1,3,5,7,9,11))))
+        matrix=permute(bond_hole(hole),((2,4,6,8,10,12),(1,3,5,7,9,11)))
         repaired,diagnostic=_positive_metric(matrix)
-        repaired_hole=_perm(_linearmap_metric(repaired),(7,1,8,2,9,3,10,4,11,5,12,6))
+        repaired_hole=_perm(repaired,(7,1,8,2,9,3,10,4,11,5,12,6))
         push!(repairs,merge(diagnostic,(;reason=fit.trigger,stage=fit.stage,
             iteration=fit.iteration,raw_cost=fit.raw,target_norm=fit.target_norm)))
         fit=_optimize_pair(pair,_reduced_metric(repaired_hole,pair.Qa,pair.Qb),method)

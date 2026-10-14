@@ -140,7 +140,7 @@ function _variational_chain_lognorm(gettensor,n)
     for j in 1:n
         A=gettensor(j);rank=numind(A)
         if carry!==nothing
-            R=_twistdual(carry,(1,))
+            R=carry
             A=_out(R*permute(A,((1,),Tuple(2:rank))))
         end
         _,R=left_orth(permute(A,(Tuple(1:rank-1),(rank,))))
@@ -153,8 +153,6 @@ function _variational_chain_lognorm(gettensor,n)
 end
 
 function _variational_identity(V,T)
-    # The physical double leg is a fused (ket,bra) pair. An invariant vacuum
-    # seed always exists, including for non-Abelian/fermionic virtual spaces.
     v=_fuse(_out(id(T,V)),1,2;dual_output=isdual(V))
     v/norm(v)
 end
@@ -247,7 +245,7 @@ function _variational_warm_start(target)
     while !isempty(C.tensors) && !(first(oldcoordinates) in coordinates)
         _diagonal_center!(C,1)
         A=first(C.tensors)
-        cap=_conj(_twistdual(_variational_input_identity(target,first(C.edges)),(1,)))
+        cap=_conj(_variational_input_identity(target,first(C.edges)))
         H=_diagonal_join(_DiagonalTensor(A,[1,2,3]),_DiagonalTensor(cap,[2]))
         H=_diagonal_join(H,_diagonal_unit(dual(space(A,1)),1;T=scalartype(A)))
         popfirst!(C.tensors);popfirst!(C.edges);popfirst!(oldcoordinates)
@@ -260,7 +258,7 @@ function _variational_warm_start(target)
     while !isempty(C.tensors) && !(last(oldcoordinates) in coordinates)
         _diagonal_center!(C,length(C.tensors))
         A=last(C.tensors)
-        cap=_conj(_twistdual(_variational_input_identity(target,last(C.edges)),(1,)))
+        cap=_conj(_variational_input_identity(target,last(C.edges)))
         H=_diagonal_join(_DiagonalTensor(A,[1,2,3]),_DiagonalTensor(cap,[2]))
         H=_diagonal_join(H,_diagonal_unit(dual(space(A,3)),3;T=scalartype(A)))
         pop!(C.tensors);pop!(C.edges);pop!(oldcoordinates)
@@ -334,7 +332,7 @@ function _variational_step(message,target,i,A,left)
     if i==(left ? first(range) : last(range))
         E=_diagonal_join(E,_variational_labelled_block(target,j))
     end
-    bra=_conj(_twistdual(A,(2,)))
+    bra=_conj(A)
     E=_diagonal_join(E,_DiagonalTensor(bra,
         [_variational_candidate_bond(target,i),target.edges[i],_variational_candidate_bond(target,i+1)]))
     _variational_message(E,message.log_scale)
@@ -357,9 +355,7 @@ function _variational_pair(target,i,left,right)
     E=_diagonal_join(E,right.tensor)
     labels=[_variational_candidate_bond(target,i),target.edges[i],target.edges[i+1],
         _variational_candidate_bond(target,i+2)]
-    # The two open candidate bonds are diagrammatic evaluations. Convert
-    # their dual legs to the positive orthonormal-basis metric before the SVD.
-    _twistdual(_diagonal_reorder(E,labels).data,(1,4))*exp(left.log_scale+right.log_scale)
+    _diagonal_reorder(E,labels).data*exp(left.log_scale+right.log_scale)
 end
 
 # Factor the cross-block projection through the input boundary bond,
@@ -373,10 +369,8 @@ function _variational_pair_factors(target,i,left,right)
     bond=_variational_target_bond(target,jr)
     L=_diagonal_reorder(L,[_variational_candidate_bond(target,i),target.edges[i],bond]).data
     R=_diagonal_reorder(R,[bond,target.edges[i+1],_variational_candidate_bond(target,i+2)]).data
-    # Outer twists give the same positive metric as _variational_pair. The
-    # internal twist converts a diagrammatic evaluation to map composition.
-    permute(_twistdual(L,(1,)),((1,2),(3,))),
-        permute(_twistdual(R,(1,3)),((1,),(2,3)))
+    permute(L,((1,2),(3,))),
+        permute(R,((1,),(2,3)))
 end
 
 function _variational_svd_guard(S,fullspace,trunc,m,n)
@@ -491,7 +485,7 @@ function _variational_half_sweep!(C,target,method,right,entropy,profile,
         lastS=S
         maxdiscard=max(maxdiscard,(err/magnitude)^2)
         C.tensors[i]=_out(right ? U : U*S)
-        C.tensors[i+1]=_out(_twistdual(right ? S*V : V,(1,)))
+        C.tensors[i+1]=_out(right ? S*V : V)
         C.center=right ? i+1 : i
         k=right ? i : i+1
         rolling=_variational_step(rolling,target,k,C.tensors[k],right)
@@ -589,7 +583,7 @@ function _diagonal_absorb_layer!(env,sites,l,t,method::BoundaryMPSDiagonalVariat
         H=_variational_block(target,1);M=permute(H,((1,2),(3,4)))
         observer=entropy===nothing ? nothing : (k,s)->begin entropy.maximum=max(entropy.maximum,s);profile[k]=s end
         U,S,V,err=_boundary_svd(M,_truncation(method.chi,method.sector_space),observer,1)
-        C=DiagonalBoundary(AbstractTensorMap[_out(U),_out(_twistdual(S*V,(1,)))],copy(target.edges),2,0.0,0.0,1.0)
+        C=DiagonalBoundary(AbstractTensorMap[_out(U),_out(S*V)],copy(target.edges),2,0.0,0.0,1.0)
         report=merge(report,(;residual=abs2(err),max_local_discarded_weight=abs2(err)))
     else
         try

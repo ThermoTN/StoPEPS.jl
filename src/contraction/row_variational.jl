@@ -137,7 +137,7 @@ function _row_half_projection(message,target,i,left)
 end
 function _row_mixed_step(message,target,i,A,left)
     half=_row_half_projection(message,target,i,left)
-    bra=_conj(_twistdual(A,(2,)))
+    bra=_conj(A)
     X=_diagonal_join(half.tensor,_DiagonalTensor(bra,
         [_row_candidate_label(target,i),_row_output_label(target,i),_row_candidate_label(target,i+1)]))
     _variational_message(X,half.log_scale)
@@ -156,7 +156,7 @@ function _row_project_pair(target,i,left,right)
     X=_diagonal_reorder(_diagonal_join(L.tensor,R.tensor),
         [_row_candidate_label(target,i),_row_output_label(target,i),
             _row_output_label(target,i+1),_row_candidate_label(target,i+2)])
-    theta=_twistdual(X.data,(1,4));s=norm(theta)
+    theta=X.data;s=norm(theta)
     isfinite(s) || throw(_VariationalNumericalError(:nonfinite_projection))
     iszero(s) && throw(_VariationalNumericalError(:zero_local_projection))
     lognorm=L.log_scale+R.log_scale+log(s)
@@ -216,7 +216,7 @@ function _row_half_sweep!(C,target,method,right,entropy,profile,fixed;work=nothi
             throw(_VariationalNumericalError(:objective_increase))
         kept=S/s
         C.tensors[i]=_out(right ? U : U*kept)
-        C.tensors[i+1]=_out(_twistdual(right ? kept*V : V,(1,)))
+        C.tensors[i+1]=_out(right ? kept*V : V)
         C.center=right ? i+1 : i;C.log_scale=newscale
         profile[i]=observed
         C.max_truncation=max(C.max_truncation,abs2(err)) # norm(M)==1
@@ -281,7 +281,7 @@ function _row_direct(target)
     V=oneunit(space(C.tensors[1],3))
     Htensor=_diagonal_join(Htensor,_diagonal_unit(V,_row_candidate_label(target,2);T=scalartype(Htensor.data)))
     A=_diagonal_reorder(Htensor,[_row_candidate_label(target,1),_row_output_label(target,1),_row_candidate_label(target,2)]).data
-    A=_twistdual(A,(1,));s=norm(A)
+    s=norm(A)
     isfinite(s) || throw(_VariationalNumericalError(:nonfinite_projection))
     C.tensors[1]=iszero(s) ? A : A/s
     C.log_scale=iszero(s) ? -Inf : H.log_scale+log(s)

@@ -13,10 +13,7 @@ output/
 /scripts/
 /examples/*
 !/examples/transverse_Ising_model/
-!/examples/Hubbard_model/
 /examples/*/config.local.jl
-/examples/Hubbard_model/log/
-/examples/Hubbard_model/results/
 /examples/transverse_Ising_model/log/
 /examples/transverse_Ising_model/results/
 *.jld2

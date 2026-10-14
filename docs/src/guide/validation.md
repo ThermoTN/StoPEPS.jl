@@ -7,9 +7,8 @@ save each calculation in its own directory.
 ## Recommended sequence
 
 1. **Compare a small independent reference.** Use `exact_thermal_observables`
-   for the 2 × 2 TFIM quick start, as in the [library tutorial](library.md),
-   or for a small Hubbard lattice.
-   Match the Ising spin/Pauli units or Hubbard chemical potential to the
+   for the 2 × 2 TFIM quick start, as in the [library tutorial](library.md).
+   Match the Ising spin/Pauli units to the
    [physical conventions](../design/physical_conventions.md).
 2. **Converge state bond dimensions.** Increase `D_pur` for preparation, then
    `D_peps` for sample evolution. Check the energy and full-update residuals.

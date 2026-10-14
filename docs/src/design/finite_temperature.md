@@ -11,8 +11,7 @@ Starting from the identity PEPO, imaginary-time evolution constructs the
 thermal factor ``X(\tau)=e^{-\tau H}`` at ``\tau=\beta_0/2``. The normalized
 density operator is ``\rho=X X^\dagger/Z``, with
 ``Z=\mathrm{Tr}(X X^\dagger)``. The checkpoint stores this PEPO and its
-global logarithmic amplitude. Hubbard preparation uses ``K=H-\mu N`` in place
-of H, as defined in [physical conventions](physical_conventions.md).
+global logarithmic amplitude.
 
 ## Stochastic evolution
 
@@ -67,6 +66,3 @@ Subsequent normalization factors update the sample weights.
 energy is the ratio of sums weighted by m_k*exp(log_weight), and `lnZ` is the
 logarithm of their mean weight. [Annealed Born resampling](resampling.md)
 constructs the proposal for regenerated samples.
-
-For the Hubbard thermal generator and observables, see
-[physical conventions](physical_conventions.md).

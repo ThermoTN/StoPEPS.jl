@@ -5,7 +5,6 @@ import MatrixAlgebraKit as MAK
 include("states/tensors.jl")
 include("states/finite.jl")
 include("models/tfim.jl")
-include("models/hubbard.jl")
 include("contraction/boundary_mps.jl")
 include("contraction/diagonal_mps.jl")
 include("contraction/diagonal_variational.jl")
@@ -29,7 +28,7 @@ include("resample/scores.jl")
 include("resample/event.jl")
 include("driver/run.jl")
 using .Results: RESULT_SCHEMA_VERSION, load_result, save_result
-export Lattice, AbstractModel, TFIM, Hubbard, FiniteState, FinitePEPS, FinitePEPO,
+export Lattice, AbstractModel, TFIM, FiniteState, FinitePEPS, FinitePEPO,
     FullUpdate, BoundaryMPS, BoundaryMPSRow, BoundaryMPSRowVariational, BoundaryMPSDiagonal, BoundaryMPSDiagonalVariational,
     UpdateMethod, ContractionMethod,
     RunConfig, ResamplingOptions, ThermalCheckpoint,

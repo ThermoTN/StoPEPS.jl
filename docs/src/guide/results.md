@@ -59,8 +59,7 @@ named tuples accessed with dot syntax.
 | `r["diagnostics"]["events"]` | Resampling events, selected mixture proportions and sample records |
 | `r["diagnostics"]["history"]` | Tensor normalization, evolution and solver diagnostics |
 
-See [physical conventions](../design/physical_conventions.md) for the
-Hamiltonians and the Hubbard meaning of `lnZ`.
+See [physical conventions](../design/physical_conventions.md) for the Hamiltonian.
 `nothing` denotes an optional field or inapplicable measurement. `NaN` denotes
 an unmeasured observable or undefined diagnostic, including initial efficiency
 and entropy values. Preserve these values when analyzing output.
@@ -69,8 +68,7 @@ and entropy values. Preserve these values when analyzing output.
 
 Each sample record carries `beta`, `id`, `seed`, `sample_index`, `configuration`,
 `count`, `log_weight`, `log_p0`, `log_q_proposal`, `physical_log_norm`,
-`energy_per_site` and contraction diagnostics. Hubbard records additionally
-carry `particle_number`.
+`energy_per_site` and contraction diagnostics.
 
 The main curve provides the weighted estimates and their sampling errors.
 See [thermal weights](../design/finite_temperature.md) for the normalization
