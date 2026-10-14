@@ -1,0 +1,57 @@
+# Local root-level notes
+/*.md
+!/README.md
+/AGENTS.md
+
+# Local calculation directories and generated outputs
+.arc/
+output/
+/.work/
+/artifacts/
+/results/
+/data/
+/scripts/
+/examples/*
+!/examples/transverse_Ising_model/
+!/examples/Hubbard_model/
+/examples/*/config.local.jl
+/examples/Hubbard_model/log/
+/examples/Hubbard_model/results/
+/examples/transverse_Ising_model/log/
+/examples/transverse_Ising_model/results/
+*.jld2
+*.h5
+*.hdf5
+*.csv
+*.tsv
+*.dat
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+*.tex
+
+# Julia development artifacts
+coverage/
+lcov.info
+docs/build/
+docs/site/
+*.cov
+*.mem
+Manifest.toml
+Manifest-v*.toml
+
+# Julia package build and local preference artifacts
+deps/deps.jl
+deps/build.log
+deps/downloads/
+deps/usr/
+deps/src/
+LocalPreferences.toml
+JuliaLocalPreferences.toml
+
+# Editor and operating-system files
+.DS_Store
+.vscode/
+.idea/

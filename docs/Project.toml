@@ -1,0 +1,11 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+StoPEPS = "adab5cae-7001-47d6-85df-334b251735b1"
+
+[sources]
+StoPEPS = {path = ".."}
+
+[compat]
+Documenter = "1"
+StoPEPS = "0.2"
+julia = "1.11"
