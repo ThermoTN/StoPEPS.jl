@@ -34,9 +34,40 @@ The normalized evolved sample is $|\psi_k(\beta)\rangle=|\tilde\psi_k(\beta)\ran
 ## Full update
 
 Both PEPO preparation and PEPS evolution use two-site gates and full update,
-following Appendix E.2. QR/LQ factorizations reduce the active tensors to small
-cores. An initial SVD fit is improved by alternating environment-weighted
-optimization with diagonally preconditioned conjugate gradients.
+following Appendix E.2. QR factorizations reduce the active tensors to small
+cores. Before the initial bond SVD, the reduced environment selects two
+invertible external gauges. An auxiliary positive matrix is constructed from
+its normalized Hermitian part, with an eigenvalue floor of
+`max(sqrt(eps), metric_dimension*eps)*spectral_scale`, using the actual scalar
+precision. Independent QR factorizations of its square root give the gauges
+without truncating either exterior space.
+
+The SVD and alternating optimization use these coordinates, with diagonally
+preconditioned conjugate gradients. The fitting metric is the congruence of the
+original environment; the auxiliary positive matrix only selects coordinates.
+Costs and stopping decisions use the complete target and original coordinates.
+Finite solver tolerances and the coordinate-dependent diagonal shift can change
+the optimization trajectory relative to the earlier ungauged update.
+
+After each left solve, an untruncated QR moves the bond center right; after the
+right solve, an untruncated LQ moves it left. The best candidate retains these
+factors. A final untruncated SVD of its bond-sized center balances the pair
+before undoing the external gauges. These transformations preserve the pair and
+do not change the physical log-amplitude ledger. Zero-iteration and initially
+converged fits retain their already balanced initial SVD.
+
+Metric congruence acts on one leg at a time, and the fixed metric-weighted target
+is cached throughout each ALS solve. Residual fallback and on-demand PSD repair
+remain in place. Repair projects the complete two-site environment before QR
+reduction, then rebuilds both gauges and the SVD initial guess. Row environments
+group each site's exterior legs while forming the hole and project positive
+eigenvectors in batches of complete irreps, avoiding a twelve-leg hole and a
+separate full repaired matrix. Diagonal environments retain their existing
+complete-hole construction.
+
+FU initialization and final-center SVD retry LAPACK nonconvergence once with
+`gesvd` after `gesdd` fails, emitting a Julia warning with the operation, bond,
+sector and matrix dimensions. Other failures propagate.
 
 Boundary-MPS contractions supply the network environment
 ([Jordan et al., 2008](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.250602),

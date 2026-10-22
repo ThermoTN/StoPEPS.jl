@@ -100,3 +100,28 @@ println(sample.Se.north)
 `E.E.` in the logs is `max_boundary_entropy` from the evolution interval.
 The main log also reports full-update iteration and linear-solver summaries.
 Use [troubleshooting](troubleshooting.md) to interpret them.
+
+## Full-update gauge diagnostics
+
+`parameters["full_update_algorithm"] == "environment_gauge_SVD_ALS"` and
+`full_update_algorithm_revision == 2` identify the environment-gauged update
+with internal QR/LQ center motion and final bond-center SVD balancing. Files
+without this algorithm field used the historical ungauged local-SVD update.
+The parameters also record the auxiliary spectral floor, original-coordinate
+cost evaluation and gauged linear-system conventions.
+
+Each evolution history entry adds `fu_gauge`:
+
+| Field | Meaning |
+|---|---|
+| `constructions` | Number of external gauge constructions, including reconstruction after PSD repair |
+| `floored_multiplets`, `floored_eigenvalues` | Auxiliary eigenvalue-floor counts; the latter includes irrep dimensions |
+| `max_relative_floor` | Largest relative auxiliary floor |
+| `minimum_relative_eigenvalue` | Smallest relative eigenvalue of the original Hermitian reduced metrics |
+| `max_hermiticity_defect` | Largest Hermiticity defect of the normalized original reduced metrics |
+
+Steps with no bond updates report zeros. These scalar summaries describe the
+choice of coordinates, separately from physical-environment PSD repair. No
+gauge matrices or spectra are saved. The optional fields preserve schema
+`2.7.0` and the existing checkpoint format; old checkpoint histories can omit
+them. Preparation metadata retains the algorithm that created the checkpoint.

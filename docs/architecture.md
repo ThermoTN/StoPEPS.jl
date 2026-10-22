@@ -23,7 +23,11 @@ The [documentation index](src/index.md) provides the user guides, and
 kernels. Their local legs and symmetry spaces are specified in
 [tensor conventions](src/design/tensor_conventions.md).
 
-`FullUpdate` provides two-site imaginary-time evolution. `ContractionMethod`
+`FullUpdate` provides two-site imaginary-time evolution with environment-gauged
+SVD initialization, ALS with internal QR/LQ center motion, and balancing of the
+retained bond center. Residuals use original coordinates; full-hole PSD repair
+remains on demand. See [full update](src/design/finite_temperature.md#full-update).
+`ContractionMethod`
 dispatch selects row, diagonal or variational boundary MPSs for norms,
 observables and sampling. Models implement `physical_space`, local Hamiltonians
 and energy measurement.

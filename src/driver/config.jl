@@ -135,6 +135,14 @@ function parameter_dict(c::RunConfig)
     data["sampling_site_order"]=[Tuple(i) for i in (diagonal ? _diagonal_order(c.lattice) : site_order(c.lattice))]
     data["contraction_order"]=diagonal ? "x+y_ascending; even_diagonal_x_ascending; odd_diagonal_x_descending" : "row_major"
     data["state_truncation_metric"]="relative_squared_FU_residual"
+    if c.update isa FullUpdate
+        data["full_update_algorithm"]="environment_gauge_SVD_ALS"
+        data["full_update_algorithm_revision"]=_FU_ALGORITHM_REVISION
+        data["full_update_gauge_floor"]="max(sqrt(eps(real_scalar_type)),metric_dimension*eps(real_scalar_type))*spectral_scale; auxiliary_metric_only"
+        data["full_update_cost_evaluation"]="original_coordinates_and_full_metric; full_hole_PSD_repair_on_residual_failure"
+        data["full_update_linear_system"]="environment_and_internal_gauge_coordinates; relative_diagonal_shift_and_CG_residual"
+        data["full_update_internal_gauge"]="QR_after_left_solve; LQ_after_right_solve; best_center_SVD_without_truncation"
+    end
     data["environment_truncation_metric"]="canonical_SVD_relative_discarded_weight"
     data["boundary_entropy_convention"]="pretruncation_Schmidt_entropy; nats; sector_dimension_weighted"
     data["boundary_entropy_log_scope"]="maximum_over_FU_boundary_cuts_in_output_interval"

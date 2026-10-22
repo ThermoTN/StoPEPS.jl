@@ -54,13 +54,14 @@ for the observable of interest.
 
 ## Full-update solver
 
-`update=FullUpdate(...)` configures environment-weighted tensor optimization.
+`update=FullUpdate(...)` configures environment-weighted tensor optimization
+with [external and internal gauges](../design/finite_temperature.md#full-update).
 
 | Keyword | Library default | Meaning |
 |---|---|---|
-| `max_iterations` | 4 | Alternating least-squares iterations; zero selects the initial SVD fit |
+| `max_iterations` | 4 | Alternating least-squares iterations; zero selects the initial environment-gauged SVD fit |
 | `error_tolerance` | 1e-8 | Relative squared fit residual of paper Eq. (34) |
-| `diagonal_shift` | 1e-10 | Regularization shift in the core linear system |
+| `diagonal_shift` | 1e-10 | Relative regularization shift in the current gauged core linear system |
 | `linear_max_iterations` | 24 | Preconditioned conjugate-gradient iterations |
 | `linear_tolerance` | 1e-9 | Relative linear-system residual |
 

@@ -2,6 +2,7 @@ module StoPEPS
 using Dates, LinearAlgebra, Printf, Random, Statistics
 using TensorKit, TensorOperations
 import MatrixAlgebraKit as MAK
+include("states/svd.jl")
 include("states/tensors.jl")
 include("states/finite.jl")
 include("models/tfim.jl")

@@ -14,5 +14,10 @@ defines the `metadata`, `parameters`, `observables` and `diagnostics` groups.
 `results/result.jld2` stores numerical measurements and diagnostics.
 Each write atomically publishes the file.
 
+FU algorithm revision 2 adds optional `full_update_algorithm*` parameter fields
+and scalar `fu_gauge` summaries in evolution histories. These identify the
+environment and internal bond gauges without storing tensors or changing
+schema `2.7.0`. See [gauge diagnostics](src/guide/results.md#full-update-gauge-diagnostics).
+
 See [runtime](src/design/runtime.md) for output timing and the reading guide
 for completion status and sample records.
