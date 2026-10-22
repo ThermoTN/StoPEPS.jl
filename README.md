@@ -55,13 +55,17 @@ run_stochastic(c; checkpoint)
 ```
 
 The [quick-start configuration](examples/transverse_Ising_model/config.quickstart.jl)
-runs a 2 × 2 transverse-field Ising model with open boundaries, J=1 and h=0.7,
+runs a 4 × 4 transverse-field Ising model with open boundaries, J=1 and h=0.7,
 in one process with one BLAS thread. Output goes to the ignored directory
 `examples/transverse_Ising_model/output/quickstart/`. A successful run has four
 curve rows and `metadata["complete"]==true`; the
 [results tutorial](docs/src/guide/results.md) checks these and prints energy
 per site with its sampling error. See [setup and launch](docs/src/guide/quickstart.md)
 for the example settings, local configuration and MPI setup.
+
+If the output directory already contains a run, choose a fresh directory with
+`quickstart_config(output_directory="output/quickstart-run2")`, or set
+`overwrite_output=true` to replace the previous run.
 
 ## Examples
 

@@ -1,6 +1,6 @@
 # Reading results
 
-After the [2 × 2 TFIM calculation](https://github.com/ThermoTN/StoPEPS.jl#a-quick-start),
+After the [4 × 4 TFIM calculation](https://github.com/ThermoTN/StoPEPS.jl#a-quick-start),
 run this in Julia from the repository root with `--project=.` to check the
 result and print its curve:
 

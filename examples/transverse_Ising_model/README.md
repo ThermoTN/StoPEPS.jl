@@ -51,7 +51,7 @@ Preparation reaches `beta0`; sampling and PEPS evolution continue to beta=8.
 `beta_measure` selects energy measurements. The evolution uses the union of
 these grids, 0 and `beta0`.
 
-Start with the 2 × 2 open-boundary [config.quickstart.jl](config.quickstart.jl)
+Start with the 4 × 4 open-boundary [config.quickstart.jl](config.quickstart.jl)
 and the shared [quick start](../../README.md#a-quick-start). It uses dense
 tensors, the X basis, h=0.7 and row boundary-MPS contraction. Check
 [convergence](../../docs/src/guide/validation.md) before choosing production

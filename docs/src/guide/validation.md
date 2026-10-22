@@ -7,7 +7,7 @@ save each calculation in its own directory.
 ## Recommended sequence
 
 1. **Compare a small independent reference.** Use `exact_thermal_observables`
-   for the 2 × 2 TFIM quick start, as in the [library tutorial](library.md).
+   for a separate 2 × 2 TFIM calculation, as in the [library tutorial](library.md).
    Match the Ising spin/Pauli units to the
    [physical conventions](../design/physical_conventions.md).
 2. **Converge state bond dimensions.** Increase `D_pur` for preparation, then

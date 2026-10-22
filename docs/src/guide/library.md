@@ -45,9 +45,14 @@ sampling probability of that configuration.
 
 ## Compare exact thermodynamics
 
+Use a separate 2 × 2 calculation for this dense reference comparison:
+
 ```julia
-for row in result["observables"]["curve"]
-    reference = exact_thermal_observables(c.lattice, c.model, row.beta)
+c_small = quickstart_config(lattice=Lattice(2, 2), output_directory=nothing)
+checkpoint_small = run_purification(c_small)
+result_small = run_stochastic(c_small; checkpoint=checkpoint_small)
+for row in result_small["observables"]["curve"]
+    reference = exact_thermal_observables(c_small.lattice, c_small.model, row.beta)
     println((beta=row.beta, energy=row.energy_per_site,
              exact=reference.energy_per_site,
              difference=row.energy_per_site-reference.energy_per_site,
@@ -56,9 +61,9 @@ end
 ```
 
 The dense reference returns energy per site, total energy and lnZ.
-Hilbert-space storage grows
-exponentially with site count; the four-site quick start provides a small
-reference for the workflow.
+Hilbert-space storage grows exponentially with site count. The default
+4 × 4 quick start has 16 sites, so its dense Hamiltonian alone requires
+32 GiB; use the four-site calculation above for this comparison.
 
 ## Reuse a saved checkpoint
 

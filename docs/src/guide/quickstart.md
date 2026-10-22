@@ -5,12 +5,12 @@ Use Julia 1.11 or later and run the commands from the repository root.
 ## Serial quick start
 
 The [README](https://github.com/ThermoTN/StoPEPS.jl#a-quick-start)
-contains the complete 2 × 2 open-boundary TFIM calculation. The root environment
+contains the complete 4 × 4 open-boundary TFIM calculation. The root environment
 provides StoPEPS and its numerical dependencies; the example uses these settings:
 
 | Setting | Quick-start value |
 |---|---|
-| Lattice and model | 2 × 2 square lattice with open boundaries; TFIM, J=1 and h=0.7, Pauli operators |
+| Lattice and model | 4 × 4 square lattice with open boundaries; TFIM, J=1 and h=0.7, Pauli operators |
 | Sampling | X basis, Ns=32, seed=20260924 |
 | Temperature grid | beta=[0, 0.1, 0.2, 0.3], beta0=0.1 |
 | Bond dimensions | PEPO/PEPS D=4; boundary-MPS chi=16 |
@@ -58,6 +58,7 @@ include(joinpath(@__DIR__, "config.quickstart.jl"))
 const blas_threads = 1
 const config = quickstart_config(
     output_directory=joinpath(@__DIR__, "output", "mpi-quickstart"),
+    overwrite_output="--overwrite" in ARGS,
 )
 ```
 
@@ -69,10 +70,12 @@ Instantiate it and install the matching launcher:
 ```sh
 APP=examples/transverse_Ising_model
 julia --project="$APP" -e 'using Pkg; Pkg.instantiate()'
-julia --project="$APP" -e 'using MPI; MPI.install_mpiexecjl()'
+julia --project="$APP" -e 'using MPI; isfile(joinpath(first(DEPOT_PATH), "bin", "mpiexecjl")) || MPI.install_mpiexecjl()'
+export PATH="$(julia --project="$APP" -e 'print(joinpath(first(DEPOT_PATH), "bin"))'):$PATH"
 ```
 
-Add the depot's `bin` directory to PATH or use the installed `mpiexecjl` path.
+The last command adds the launcher's directory to PATH for the current shell.
+Run it again in a new shell, or add that directory to your shell configuration.
 Then run the preparation and stochastic commands in the
 [TFIM example](https://github.com/ThermoTN/StoPEPS.jl/blob/main/examples/transverse_Ising_model/README.md#run).
 

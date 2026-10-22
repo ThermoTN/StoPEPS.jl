@@ -7,7 +7,7 @@ full-update evolution. The method is described by
 
 ## User guide
 
-Start with the [2 × 2 TFIM calculation](https://github.com/ThermoTN/StoPEPS.jl#a-quick-start), then
+Start with the [4 × 4 TFIM calculation](https://github.com/ThermoTN/StoPEPS.jl#a-quick-start), then
 [read its results](guide/results.md). Choose an [application](guide/applications.md)
 and use [setup and launch](guide/quickstart.md) for local configuration and MPI.
 Check the [parameters](guide/parameters.md) before increasing the system size;

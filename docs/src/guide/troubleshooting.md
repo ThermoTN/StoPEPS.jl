@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Start with the [2 × 2 calculation](quickstart.md). Completion metadata and
+Start with the [4 × 4 calculation](quickstart.md). Completion metadata and
 the last collected curve row identify the progress of each stage.
 
 | Symptom | Checks and action |

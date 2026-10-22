@@ -1,12 +1,13 @@
 using StoPEPS
 
 function quickstart_config(;
+    lattice=Lattice(4, 4), # 4 × 4 square lattice with open boundaries
     output_directory=joinpath(@__DIR__, "output", "quickstart"),
     seed=20260924,
     overwrite_output=false,
 )
     RunConfig(
-        lattice=Lattice(2, 2), # 2 × 2 square lattice with open boundaries
+        lattice=lattice,
         model=TFIM(J=1.0, h=0.7),
         sampling_basis=XBasis(),
         beta0=0.1,
