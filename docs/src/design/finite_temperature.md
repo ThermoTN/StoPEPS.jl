@@ -37,7 +37,7 @@ Both PEPO preparation and PEPS evolution use two-site gates and full update,
 following Appendix E.2. 
 FU initialization and final-center SVD retry LAPACK nonconvergence once with
 `gesvd` after `gesdd` fails, emitting a Julia warning with the operation, bond,
-sector and matrix dimensions. Other failures propagate.
+sector and matrix dimensions.
 
 Boundary-MPS contractions supply the network environment
 ([Jordan et al., 2008](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.250602),
