@@ -7,7 +7,7 @@ Coordinates are `sites[x,y]`, with x increasing west to east and y increasing
 north to south. The row-major site index is `x+(y-1)*Lx`; each nearest-neighbor
 bond is counted once.
 
-The code uses k_B=1. Temperature has energy units; beta and imaginary time
+The code uses $k_B=1$. Temperature has energy units; beta and imaginary time
 have inverse-energy units. Thermal preparation evolves to tau=beta/2.
 `energy_per_site` is energy divided by Lx*Ly; `energy_total` is extensive.
 
